@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario - Papelería La Prosperidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #F4F6FB; color: #333; display: flex; min-height: 100vh; }
+    .sidebar { width: 230px; background: #1E5BC6; color: #fff; display: flex; flex-direction: column; min-height: 100vh; flex-shrink: 0; }
+    .sidebar-logo { padding: 24px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .brand { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .sidebar-logo .sub { font-size: 10px; opacity: 0.7; margin-top: 3px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 18px; font-size: 13px; color: #fff; text-decoration: none; transition: background 0.15s; }
+    .nav-item:hover { background: rgba(255,255,255,0.12); }
+    .nav-item.active { background: rgba(255,255,255,0.22); font-weight: 600; }
+    .nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 8px 18px; }
+    .nav-logout { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.15); }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .topbar { height: 58px; background: #fff; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; padding: 0 28px; gap: 12px; }
+    .topbar-title { font-weight: 600; font-size: 16px; flex: 1; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: #1E5BC6; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+    .content { padding: 28px; flex: 1; }
+    .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; border: none; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-blue { background: #1E5BC6; color: #fff; }
+    .btn-green { background: #3CB371; color: #fff; }
+    .btn-outline { background: #fff; color: #1E5BC6; border: 1.5px solid #1E5BC6; }
+    .search-bar { display: flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid #E5E7EB; border-radius: 8px; padding: 8px 14px; }
+    .search-bar input { border: none; outline: none; font-size: 13px; font-family: 'Poppins', sans-serif; width: 180px; background: transparent; color: #333; }
+    select.filter { border: 1.5px solid #E5E7EB; border-radius: 8px; padding: 9px 14px; font-size: 12px; font-family: 'Poppins', sans-serif; outline: none; background: #fff; color: #333; cursor: pointer; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 18px 20px; border: 1px solid #E5E7EB; }
+    .stat-label { font-size: 12px; color: #6B7280; margin-bottom: 6px; }
+    .stat-value { font-size: 28px; font-weight: 700; color: #1E5BC6; }
+    .stat-value.green { color: #3CB371; }
+    .stat-value.amber { color: #F59E0B; }
+    .section-title { font-weight: 600; font-size: 15px; margin-bottom: 14px; color: #333; }
+    .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #E5E7EB; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #F8FAFC; color: #6B7280; font-weight: 600; text-align: left; padding: 12px 16px; border-bottom: 1.5px solid #E5E7EB; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+    td { padding: 12px 16px; border-bottom: 1px solid #F3F4F6; }
+    tr:hover td { background: #F8FAFC; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge-ok { background: #E6F9EE; color: #1A7B3D; }
+    .badge-low { background: #FEF2E8; color: #C05E00; }
+    .badge-danger { background: #FEE8EE; color: #B91C1C; }
+    .btn-sm { padding: 5px 12px; font-size: 11px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">📎 Papelería La Prosperidad</div>
+      <div class="sub">Sistema Integral de Gestión</div>
+    </div>
+    <a class="nav-item" href="dashboard.html">🏠 Inicio</a>
+    <a class="nav-item" href="productos.html">📦 Productos</a>
+    <a class="nav-item" href="clientes.html">👥 Clientes</a>
+    <a class="nav-item" href="ventas.html">🛒 Ventas</a>
+    <a class="nav-item" href="#">📊 Reportes</a>
+    <a class="nav-item active" href="inventario.html">📋 Inventario</a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#">👤 Usuarios</a>
+    <a class="nav-item" href="#">⚙ Configuración</a>
+    <div class="nav-logout">
+      <a class="nav-item" href="login.html">🚪 Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Control de Inventario</div>
+      <span style="font-size:13px;color:#6B7280">Administrador</span>
+      <div class="user-avatar">AD</div>
+    </div>
+    <div class="content">
+      <div class="toolbar">
+        <div class="search-bar"><span>🔍</span><input type="text" placeholder="Buscar producto..."></div>
+        <select class="filter"><option>Todas las categorías</option><option>Papelería</option><option>Escritura</option><option>Arte</option></select>
+        <select class="filter"><option>Todo el stock</option><option>Disponible</option><option>Bajo Stock</option></select>
+        <button class="btn btn-blue" style="margin-left:auto">🔄 Actualizar Inventario</button>
+        <button class="btn btn-green">📄 Generar Reporte</button>
+        <button class="btn btn-outline">📥 Exportar PDF</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Total Productos</div><div class="stat-value">250</div></div>
+        <div class="stat-card"><div class="stat-label">Disponibles</div><div class="stat-value green">238</div></div>
+        <div class="stat-card"><div class="stat-label">Bajo Stock</div><div class="stat-value amber">12</div></div>
+      </div>
+
+      <div class="section-title">Estado del Inventario</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock Actual</th><th>Stock Mínimo</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P001</td><td>Cuaderno Norma</td><td>Papelería</td><td>50</td><td>20</td>
+              <td><span class="badge badge-ok">Disponible</span></td>
+              <td><button class="btn btn-outline btn-sm">Actualizar</button></td>
+            </tr>
+            <tr>
+              <td>P002</td><td>Lápiz Mirado</td><td>Escritura</td><td>10</td><td>20</td>
+              <td><span class="badge badge-low">Bajo Stock</span></td>
+              <td><button class="btn btn-blue btn-sm">Reponer</button></td>
+            </tr>
+            <tr>
+              <td>P004</td><td>Borrador Nata</td><td>Escritura</td><td>5</td><td>15</td>
+              <td><span class="badge badge-danger">Bajo Stock</span></td>
+              <td><button class="btn btn-blue btn-sm">Reponer</button></td>
+            </tr>
+            <tr>
+              <td>P003</td><td>Regla 30 cm</td><td>Papelería</td><td>40</td><td>10</td>
+              <td><span class="badge badge-ok">Disponible</span></td>
+              <td><button class="btn btn-outline btn-sm">Actualizar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

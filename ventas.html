@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ventas - Papelería La Prosperidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #F4F6FB; color: #333; display: flex; min-height: 100vh; }
+    .sidebar { width: 230px; background: #1E5BC6; color: #fff; display: flex; flex-direction: column; min-height: 100vh; flex-shrink: 0; }
+    .sidebar-logo { padding: 24px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .brand { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .sidebar-logo .sub { font-size: 10px; opacity: 0.7; margin-top: 3px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 18px; font-size: 13px; color: #fff; text-decoration: none; transition: background 0.15s; }
+    .nav-item:hover { background: rgba(255,255,255,0.12); }
+    .nav-item.active { background: rgba(255,255,255,0.22); font-weight: 600; }
+    .nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 8px 18px; }
+    .nav-logout { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.15); }
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { height: 58px; background: #fff; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; padding: 0 28px; gap: 12px; flex-shrink: 0; }
+    .topbar-title { font-weight: 600; font-size: 16px; flex: 1; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: #1E5BC6; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+    .content { padding: 24px 28px; flex: 1; overflow-y: auto; }
+    .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; border: none; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-blue { background: #1E5BC6; color: #fff; }
+    .btn-green { background: #3CB371; color: #fff; }
+    .btn-pink { background: #FF2D6F; color: #fff; }
+    .btn-outline { background: #fff; color: #1E5BC6; border: 1.5px solid #1E5BC6; }
+    .layout { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+    .form-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #E5E7EB; margin-bottom: 18px; }
+    .section-title { font-weight: 600; font-size: 14px; margin-bottom: 14px; color: #333; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 5px; }
+    .form-group input, .form-group select { width: 100%; border: 1.5px solid #E5E7EB; border-radius: 8px; padding: 9px 12px; font-size: 12px; font-family: 'Poppins', sans-serif; outline: none; color: #333; background: #fff; }
+    .form-group input:focus { border-color: #1E5BC6; }
+    .product-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #F8FAFC; color: #6B7280; font-weight: 600; text-align: left; padding: 10px 13px; border-bottom: 1.5px solid #E5E7EB; font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px 13px; border-bottom: 1px solid #F3F4F6; }
+    .summary-box { background: #EEF3FC; border: 1.5px solid #C7D7F5; border-radius: 12px; padding: 16px 18px; margin-bottom: 16px; }
+    .summary-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+    .summary-total { font-weight: 700; font-size: 15px; color: #1E5BC6; border-top: 1.5px solid #C7D7F5; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; }
+    .invoice-card { background: #fff; border-radius: 12px; padding: 18px; border: 1px solid #E5E7EB; }
+    .invoice-title { font-weight: 700; font-size: 13px; color: #1E5BC6; }
+    .invoice-sub { font-size: 11px; color: #6B7280; margin: 2px 0 12px; }
+    .invoice-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; }
+    .invoice-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; color: #1E5BC6; border-top: 2px solid #1E5BC6; margin-top: 10px; padding-top: 10px; }
+    .invoice-divider { border: none; border-top: 1px solid #E5E7EB; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">📎 Papelería La Prosperidad</div>
+      <div class="sub">Sistema Integral de Gestión</div>
+    </div>
+    <a class="nav-item" href="dashboard.html">🏠 Inicio</a>
+    <a class="nav-item" href="productos.html">📦 Productos</a>
+    <a class="nav-item" href="clientes.html">👥 Clientes</a>
+    <a class="nav-item active" href="ventas.html">🛒 Ventas</a>
+    <a class="nav-item" href="#">📊 Reportes</a>
+    <a class="nav-item" href="inventario.html">📋 Inventario</a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#">👤 Usuarios</a>
+    <a class="nav-item" href="#">⚙ Configuración</a>
+    <div class="nav-logout">
+      <a class="nav-item" href="login.html">🚪 Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Registro de Ventas</div>
+      <span style="font-size:13px;color:#6B7280">Administrador</span>
+      <div class="user-avatar">AD</div>
+    </div>
+    <div class="content">
+      <div class="toolbar">
+        <button class="btn btn-green">💾 Guardar Venta</button>
+        <button class="btn btn-blue">🖨 Imprimir Factura</button>
+        <button class="btn btn-pink">❌ Cancelar Venta</button>
+      </div>
+
+      <div class="layout">
+        <div>
+          <div class="form-card">
+            <div class="section-title">Datos del Cliente</div>
+            <div class="form-grid">
+              <div class="form-group"><label>Nombre Cliente</label><input type="text" value="Juan Pérez"></div>
+              <div class="form-group"><label>Documento</label><input type="text" value="10012345"></div>
+              <div class="form-group"><label>Teléfono</label><input type="text" value="3001234567"></div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="section-title">Agregar Producto</div>
+            <div class="product-row">
+              <div class="form-group"><label>Código Producto</label><input type="text" placeholder="P001"></div>
+              <div class="form-group"><label>Cantidad</label><input type="number" value="1"></div>
+              <div class="form-group"><label>Precio Unitario</label><input type="text" placeholder="$0.000"></div>
+              <div class="form-group"><label>Subtotal</label><input type="text" placeholder="$0.000" style="background:#F8FAFC"></div>
+              <button class="btn btn-blue" style="margin-bottom:1px">➕</button>
+            </div>
+            <table>
+              <thead><tr><th>Código</th><th>Producto</th><th>Cant.</th><th>Precio Unit.</th><th>Subtotal</th></tr></thead>
+              <tbody>
+                <tr><td>P001</td><td>Cuaderno Norma

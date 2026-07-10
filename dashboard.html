@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Papelería La Prosperidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #F4F6FB; color: #333; display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 230px; background: #1E5BC6; color: #fff;
+      display: flex; flex-direction: column; min-height: 100vh; flex-shrink: 0;
+    }
+    .sidebar-logo { padding: 24px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .brand { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .sidebar-logo .sub { font-size: 10px; opacity: 0.7; margin-top: 3px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 18px; cursor: pointer; font-size: 13px;
+      color: #fff; text-decoration: none; transition: background 0.15s;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.12); }
+    .nav-item.active { background: rgba(255,255,255,0.22); font-weight: 600; }
+    .nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 8px 18px; }
+    .nav-logout { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.15); }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .topbar {
+      height: 58px; background: #fff; border-bottom: 1px solid #E5E7EB;
+      display: flex; align-items: center; padding: 0 28px; gap: 12px;
+    }
+    .topbar-title { font-weight: 600; font-size: 16px; flex: 1; }
+    .user-avatar {
+      width: 34px; height: 34px; border-radius: 50%; background: #1E5BC6;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px;
+    }
+    .content { padding: 28px; flex: 1; }
+    .section-title { font-weight: 600; font-size: 15px; margin-bottom: 14px; color: #333; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: #fff; border-radius: 12px; padding: 20px;
+      border: 1px solid #E5E7EB; position: relative;
+    }
+    .stat-icon { position: absolute; top: 18px; right: 18px; font-size: 24px; opacity: 0.5; }
+    .stat-label { font-size: 12px; color: #6B7280; margin-bottom: 6px; }
+    .stat-value { font-size: 30px; font-weight: 700; color: #1E5BC6; }
+    .stat-value.green { color: #3CB371; }
+    .stat-value.pink { color: #FF2D6F; }
+    .stat-value.amber { color: #F59E0B; }
+    .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .quick-card {
+      background: #fff; border-radius: 12px; padding: 22px 14px;
+      border: 1px solid #E5E7EB; cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.15s; text-align: center; text-decoration: none;
+    }
+    .quick-card:hover { box-shadow: 0 4px 18px rgba(30,91,198,0.13); transform: translateY(-2px); }
+    .quick-card .q-icon { font-size: 28px; margin-bottom: 8px; }
+    .quick-card .q-label { font-size: 12px; font-weight: 600; color: #333; }
+    .recent-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+    .recent-table th {
+      background: #F8FAFC; color: #6B7280; font-weight: 600;
+      text-align: left; padding: 11px 14px; border-bottom: 1.5px solid #E5E7EB;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .recent-table td { padding: 11px 14px; border-bottom: 1px solid #F3F4F6; }
+    .recent-table tr:hover td { background: #F8FAFC; }
+    .badge {
+      display: inline-block; padding: 3px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge-ok { background: #E6F9EE; color: #1A7B3D; }
+    .badge-pend { background: #FEF2E8; color: #C05E00; }
+    .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #E5E7EB; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">📎 Papelería La Prosperidad</div>
+      <div class="sub">Sistema Integral de Gestión</div>
+    </div>
+    <a class="nav-item active" href="dashboard.html">🏠 Inicio</a>
+    <a class="nav-item" href="productos.html">📦 Productos</a>
+    <a class="nav-item" href="clientes.html">👥 Clientes</a>
+    <a class="nav-item" href="ventas.html">🛒 Ventas</a>
+    <a class="nav-item" href="#">📊 Reportes</a>
+    <a class="nav-item" href="inventario.html">📋 Inventario</a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#">👤 Usuarios</a>
+    <a class="nav-item" href="#">⚙ Configuración</a>
+    <div class="nav-logout">
+      <a class="nav-item" href="login.html">🚪 Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Bienvenido al Sistema de Gestión</div>
+      <span style="font-size:13px;color:#6B7280">Administrador</span>
+      <div class="user-avatar">AD</div>
+    </div>
+    <div class="content">
+      <div class="section-title">Indicadores Principales</div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-label">Productos registrados</div>
+          <div class="stat-value">250</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🛒</div>
+          <div class="stat-label">Ventas del día</div>
+          <div class="stat-value green">35</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Clientes registrados</div>
+          <div class="stat-value pink">180</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-label">Inventario bajo</div>
+          <div class="stat-value amber">12</div>
+        </div>
+      </div>
+
+      <div class="section-title">Accesos Rápidos</div>
+      <div class="quick-grid" style="margin-bottom:28px">
+        <a class="quick-card" href="ventas.html">
+          <div class="q-icon">➕🛒</div>
+          <div class="q-label">Nueva Venta</div>
+        </a>
+        <a class="quick-card" href="productos.html">
+          <div class="q-icon">➕📦</div>
+          <div class="q-label">Registrar Producto</div>
+        </a>
+        <a class="quick-card" href="clientes.html">
+          <div class="q-icon">➕👥</div>
+          <div class="q-label">Registrar Cliente</div>
+        </a>
+        <a class="quick-card" href="#">
+          <div class="q-icon">📈</div>
+          <div class="q-label">Ver Reportes</div>
+        </a>
+      </div>
+
+      <div class="section-title">Ventas Recientes</div>
+      <div class="table-wrap">
+        <table class="recent-table">
+          <thead>
+            <tr>
+              <th># Factura</th><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>F-001</td><td>Juan Pérez</td><td>Cuaderno x2, Lápiz x3</td><td>$20.600</td><td><span class="badge badge-ok">Completada</span></td></tr>
+            <tr><td>F-002</td><td>Ana Gómez</td><td>Regla, Borrador x2</td><td>$7.500</td><td><span class="badge badge-ok">Completada</span></td></tr>
+            <tr><td>F-003</td><td>Luis Mora</td><td>Cuaderno x5</td><td>$42.500</td><td><span class="badge badge-pend">Pendiente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
