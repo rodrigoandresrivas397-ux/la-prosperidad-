@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - Papelería La Prosperidad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #F4F6FB; color: #333; display: flex; min-height: 100vh; }
+    .sidebar { width: 230px; background: #1E5BC6; color: #fff; display: flex; flex-direction: column; min-height: 100vh; flex-shrink: 0; }
+    .sidebar-logo { padding: 24px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .sidebar-logo .brand { font-weight: 700; font-size: 13px; line-height: 1.4; }
+    .sidebar-logo .sub { font-size: 10px; opacity: 0.7; margin-top: 3px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 11px 18px; font-size: 13px; color: #fff; text-decoration: none; transition: background 0.15s; }
+    .nav-item:hover { background: rgba(255,255,255,0.12); }
+    .nav-item.active { background: rgba(255,255,255,0.22); font-weight: 600; }
+    .nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 8px 18px; }
+    .nav-logout { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.15); }
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .topbar { height: 58px; background: #fff; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; padding: 0 28px; gap: 12px; }
+    .topbar-title { font-weight: 600; font-size: 16px; flex: 1; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: #1E5BC6; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+    .content { padding: 28px; flex: 1; overflow-y: auto; }
+    .section-title { font-weight: 600; font-size: 15px; margin-bottom: 16px; color: #333; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; border: none; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-blue  { background: #1E5BC6; color: #fff; }
+    .btn-green { background: #3CB371; color: #fff; }
+    .btn-pink  { background: #FF2D6F; color: #fff; }
+    .btn-outline { background: #fff; color: #1E5BC6; border: 1.5px solid #1E5BC6; }
+
+    /* CONFIG LAYOUT */
+    .config-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+    .config-menu { background: #fff; border-radius: 12px; border: 1px solid #E5E7EB; padding: 10px 0; height: fit-content; }
+    .config-menu-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 18px; font-size: 13px; color: #333;
+      cursor: pointer; transition: background 0.15s; border: none;
+      background: none; width: 100%; text-align: left;
+    }
+    .config-menu-item:hover { background: #F4F6FB; }
+    .config-menu-item.active { background: #EEF3FC; color: #1E5BC6; font-weight: 600; border-left: 3px solid #1E5BC6; }
+    .config-panel { display: flex; flex-direction: column; gap: 20px; }
+
+    /* FORM CARD */
+    .form-card { background: #fff; border-radius: 12px; padding: 22px; border: 1px solid #E5E7EB; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; border: 1.5px solid #E5E7EB; border-radius: 8px;
+      padding: 10px 13px; font-size: 13px; font-family: 'Poppins', sans-serif;
+      outline: none; color: #333; background: #fff; transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1E5BC6; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .full-col { grid-column: 1 / -1; }
+
+    /* TOGGLE */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-info .t-label { font-size: 13px; font-weight: 600; color: #333; }
+    .toggle-info .t-desc  { font-size: 11px; color: #6B7280; margin-top: 2px; }
+    .toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #E5E7EB; border-radius: 24px; transition: 0.3s;
+    }
+    .slider:before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: 0.3s;
+    }
+    input:checked + .slider { background: #1E5BC6; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* PERFIL */
+    .perfil-header { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+    .perfil-avatar { width: 70px; height: 70px; border-radius: 50%; background: #1E5BC6; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; flex-shrink: 0; }
+    .perfil-info .p-name { font-weight: 700; font-size: 16px; }
+    .perfil-info .p-role { font-size: 12px; color: #6B7280; margin-top: 2px; }
+    .perfil-info .p-btn { margin-top: 10px; }
+
+    /* DANGER ZONE */
+    .danger-card { background: #FEF2F2; border-radius: 12px; padding: 20px; border: 1.5px solid #FCA5A5; }
+    .danger-title { font-weight: 600; font-size: 14px; color: #B91C1C; margin-bottom: 6px; }
+    .danger-desc  { font-size: 12px; color: #6B7280; margin-bottom: 14px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">📎 Papelería La Prosperidad</div>
+      <div class="sub">Sistema Integral de Gestión</div>
+    </div>
+    <a class="nav-item" href="dashboard.html">🏠 Inicio</a>
+    <a class="nav-item" href="productos.html">📦 Productos</a>
+    <a class="nav-item" href="clientes.html">👥 Clientes</a>
+    <a class="nav-item" href="ventas.html">🛒 Ventas</a>
+    <a class="nav-item" href="reportes.html">📊 Reportes</a>
+    <a class="nav-item" href="inventario.html">📋 Inventario</a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="#">👤 Usuarios</a>
+    <a class="nav-item active" href="configuracion.html">⚙ Configuración</a>
+    <div class="nav-logout">
+      <a class="nav-item" href="login.html">🚪 Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Configuración del Sistema</div>
+      <span style="font-size:13px;color:#6B7280">Administrador</span>
+      <div class="user-avatar">AD</div>
+    </div>
+    <div class="content">
+      <div class="config-layout">
+
+        <!-- MENÚ LATERAL CONFIGURACIÓN -->
+        <div class="config-menu">
+          <button class="config-menu-item active" onclick="showTab('empresa')">🏢 Datos de la Empresa</button>
+          <button class="config-menu-item" onclick="showTab('perfil')">👤 Mi Perfil</button>
+          <button class="config-menu-item" onclick="showTab('notificaciones')">🔔 Notificaciones</button>
+          <button class="config-menu-item" onclick="showTab('seguridad')">🔒 Seguridad</button>
+          <button class="config-menu-item" onclick="showTab('sistema')">⚙ Sistema</button>
+        </div>
+
+        <!-- PANELES -->
+        <div class="config-panel">
+
+          <!-- EMPRESA -->
+          <div id="tab-empresa">
+            <div class="form-card">
+              <div class="section-title">🏢 Datos de la Empresa</div>
+              <div class="form-grid">
+                <div class="form-group"><label>Nombre de la Empresa</label><input type="text" value="Papelería La Prosperidad"></div>
+                <div class="form-group"><label>NIT / RUT</label><input type="text" value="900.123.456-7"></div>
+                <div class="form-group"><label>Teléfono</label><input type="text" value="(601) 234-5678"></div>
+                <div class="form-group"><label>Correo Electrónico</label><input type="email" value="info@larosperidad.com"></div>
+                <div class="form-group"><label>Ciudad</label><input type="text" value="Bogotá, D.C."></div>
+                <div class="form-group"><label>Régimen Tributario</label>
+                  <select><option>Régimen Simplificado</option><option>Régimen Común</option></select>
+                </div>
+                <div class="form-group full-col"><label>Dirección</label><input type="text" value="Calle 45 # 23-10, Bogotá"></div>
+                <div class="form-group full-col"><label>Descripción / Slogan</label><textarea>Tu papelería de confianza desde 2010</textarea></div>
+              </div>
+              <div style="margin-top:18px; display:flex; gap:10px;">
+                <button class="btn btn-blue">💾 Guardar Cambios</button>
+                <button class="btn btn-outline">↩ Cancelar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PERFIL -->
+          <div id="tab-perfil" style="display:none">
+            <div class="form-card">
+              <div class="section-title">👤 Mi Perfil</div>
+              <div class="perfil-header">
+                <div class="perfil-avatar">AD</div>
+                <div class="perfil-info">
+                  <div class="p-name">Administrador</div>
+                  <div class="p-role">Administrador del Sistema</div>
+                  <div class="p-btn"><button class="btn btn-outline" style="font-size:11px;padding:6px 12px">📷 Cambiar foto</button></div>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="form-group"><label>Nombre Completo</label><input type="text" value="Administrador Principal"></div>
+                <div class="form-group"><label>Usuario</label><input type="text" value="admin"></div>
+                <div class="form-group"><label>Correo</label><input type="email" value="admin@prosperidad.com"></div>
+                <div class="form-group"><label>Teléfono</label><input type="text" value="3001234567"></div>
+              </div>
+              <div style="margin-top:18px; display:flex; gap:10px;">
+                <button class="btn btn-blue">💾 Guardar Cambios</button>
+                <button class="btn btn-outline">↩ Cancelar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- NOTIFICACIONES -->
+          <div id="tab-notificaciones" style="display:none">
+            <div class="form-card">
+              <div class="section-title">🔔 Notificaciones</div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-label">Inventario bajo stock</div>
+                  <div class="t-desc">Alerta cuando un producto llega al stock mínimo</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-label">Nuevas ventas registradas</div>
+                  <div class="t-desc">Notificación al guardar una nueva venta</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-label">Nuevos clientes registrados</div>
+                  <div class="t-desc">Aviso cuando se registra un nuevo cliente</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-label">Reporte diario automático</div>
+                  <div class="t-desc">Envía resumen de ventas al correo cada día</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+              </div>
+              <div style="margin-top:18px;">
+                <button class="btn btn-blue">💾 Guardar Preferencias</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEGURIDAD -->
+          <div id="tab-seguridad" style="display:none">
+            <div class="form-card">
+              <div class="section-title">🔒 Cambiar Contraseña</div>
+              <div class="form-grid">
+                <div class="form-group full-col"><label>Contraseña Actual</label><input type="password" placeholder="••••••••"></div>
+                <div class="form-group"><label>Nueva Contraseña</label><input type="password" placeholder="••••••••"></div>
+                <div class="form-group"><label>Confirmar Contraseña</label><input type="password" placeholder="••••••••"></div>
+              </div>
+              <div style="margin-top:18px; display:flex; gap:10px;">
+                <button class="btn btn-blue">🔒 Actualizar Contraseña</button>
+                <button class="btn btn-outline">↩ Cancelar</button>
+              </div>
+            </div>
+            <div class="danger-card">
+              <div class="danger-title">⚠️ Zona de Peligro</div>
+              <div class="danger-desc">Estas acciones son irreversibles. Asegúrese de tener una copia de seguridad antes de continuar.</div>
+              <button class="btn btn-pink">🗑 Eliminar todos los datos</button>
+            </div>
+          </div>
+
+          <!-- SISTEMA -->
+          <div id="tab-sistema" style="display:none">
+            <div class="form-card">
+              <div class="section-title">⚙ Configuración del Sistema</div>
+              <div class="form-grid">
+                <div class="form-group"><label>Moneda</label>
+                  <select><option>Peso Colombiano (COP)</option><option>Dólar (USD)</option></select>
+                </div>
+                <div class="form-group"><label>Formato de Fecha</label>
+                  <select><option>DD/MM/YYYY</option><option>MM/DD/YYYY</option><option>YYYY-MM-DD</option></select>
+                </div>
+                <div class="form-group"><label>IVA por Defecto (%)</label><input type="number" value="19"></div>
+                <div class="form-group"><label>Versión del Sistema</label><input type="text" value="1.0.0" style="background:#F8FAFC" readonly></div>
+              </div>
+              <div class="toggle-row" style="margin-top:14px">
+                <div class="toggle-info">
+                  <div class="t-label">Modo oscuro</div>
+                  <div class="t-desc">Cambiar la apariencia del sistema</div>
+                </div>
+                <label class="toggle"><input type="checkbox"><span class="slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="t-label">Copia de seguridad automática</div>
+                  <div class="t-desc">Respaldar datos diariamente</div>
+                </div>
+                <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+              </div>
+              <div style="margin-top:18px; display:flex; gap:10px;">
+                <button class="btn btn-blue">💾 Guardar Configuración</button>
+                <button class="btn btn-green">🔄 Restaurar Valores</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tab) {
+      const tabs = ['empresa', 'perfil', 'notificaciones', 'seguridad', 'sistema'];
+      tabs.forEach(t => {
+        document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+      });
+      document.querySelectorAll('.config-menu-item').forEach((btn, i) => {
+        btn.classList.toggle('active', tabs[i] === tab);
+      });
+    }
+  </script>
+</body>
+</html>
