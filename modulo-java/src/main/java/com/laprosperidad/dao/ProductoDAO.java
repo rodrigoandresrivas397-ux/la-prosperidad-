@@ -29,6 +29,29 @@ public class ProductoDAO {
         return productos;
     }
 
+    public Producto buscarPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM productos WHERE id = ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Producto(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getDouble("precio"),
+                        rs.getInt("cantidad")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean insertar(Producto p) throws SQLException {
         String sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad) VALUES (?, ?, ?, ?)";
 
